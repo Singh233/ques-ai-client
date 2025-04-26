@@ -8,7 +8,7 @@ export const setCookie = (name, value, options = {}) => {
 
   const {
     path = "/",
-    expires = new Date(Date.now() + 86400000), // 1 day by default
+    expires = new Date(Date.now() + 7 * 86400000), // 7 days by default
     secure = process.env.NODE_ENV === "production",
     sameSite = "strict",
   } = options;

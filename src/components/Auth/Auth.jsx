@@ -48,14 +48,10 @@ const Auth = () => {
       toast.success("Login successful");
       console.log("Login successful:", data);
       if (data.tokens?.access?.token) {
-        setCookie("accessToken", data.tokens.access.token, {
-          expires: new Date(data.tokens.access.expires),
-        });
+        setCookie("accessToken", data.tokens.access.token);
       }
       if (data.tokens?.refresh?.token) {
-        setCookie("refreshToken", data.tokens.refresh.token, {
-          expires: new Date(data.tokens.refresh.expires),
-        });
+        setCookie("refreshToken", data.tokens.refresh.token);
       }
 
       dispatch(loginSuccess(data.user));

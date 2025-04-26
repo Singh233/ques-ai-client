@@ -40,17 +40,9 @@ export const fetchCurrentUser = createAsyncThunk(
       if (response.headers.has("Access-Token")) {
         const newAccessToken = response.headers.get("Access-Token");
         const newRefreshToken = response.headers.get("Refresh-Token");
-        const accessTokenExpires = response.headers.get("Access-Token-Expires");
-        const refreshTokenExpires = response.headers.get(
-          "Refresh-Token-Expires"
-        );
 
-        setCookie("accessToken", newAccessToken, {
-          expires: accessTokenExpires,
-        });
-        setCookie("refreshToken", newRefreshToken, {
-          expires: refreshTokenExpires,
-        });
+        setCookie("accessToken", newAccessToken);
+        setCookie("refreshToken", newRefreshToken);
       }
 
       const data = await response.json();

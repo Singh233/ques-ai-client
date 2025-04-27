@@ -55,11 +55,14 @@ export const logoutUser = createAsyncThunk(
   "auth/logoutUser",
   async (_, { dispatch, rejectWithValue }) => {
     try {
+      const refreshToken = getCookie("refreshToken");
+
       const response = await fetch(`${API_URL}/auth/logout`, {
         method: "POST",
         credentials: "include", // Include cookies in the request
         headers: {
           "Content-Type": "application/json",
+          "x-refresh-token": refreshToken,
         },
       });
 

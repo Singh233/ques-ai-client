@@ -50,9 +50,13 @@ export default function HomePage() {
   }, [isAuthenticated, authLoading, router]);
 
   const handleLogout = () => {
-    dispatch(logoutUser()).then(() => {
-      router.push("/");
-    });
+    dispatch(logoutUser())
+      .then(() => {
+        router.push("/");
+      })
+      .catch(() => {
+        router.push("/");
+      });
   };
 
   const openCreateProjectModal = () => {

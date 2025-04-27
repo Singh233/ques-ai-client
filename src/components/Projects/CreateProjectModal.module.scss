@@ -1,0 +1,101 @@
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin button-styles($bg-color, $hover-bg-color, $text-color: white) {
+  background-color: $bg-color;
+  border: none;
+  color: $text-color;
+  padding: 0.7rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: $hover-bg-color;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.modal {
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    @include flex-center;
+    z-index: 1000;
+  }
+
+  &__content {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #000;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    &__group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      &__label {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #616161;
+      }
+
+      &__input {
+        padding: 0.8rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.2s;
+
+        &:focus {
+          border-color: #7e22cf;
+          outline: none;
+        }
+      }
+    }
+
+    &__button-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1rem;
+
+      &__cancel-button {
+        @include button-styles(transparent, rgba(255, 75, 85, 0.05), #ff4b55);
+      }
+
+      &__create-button {
+        @include button-styles(#7e22cf, rgba(91, 35, 194, 0.791));
+      }
+    }
+  }
+}

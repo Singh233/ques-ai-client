@@ -22,6 +22,8 @@ export default function Home() {
   useEffect(() => {
     if (isAuthenticated) {
       router.push("/home");
+    } else {
+      router.push("/");
     }
   }, [isAuthenticated, router]);
 

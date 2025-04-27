@@ -1,4 +1,4 @@
-@use "../styles/mixins" as *;
+@use "~/styles/mixins" as *;
 
 @mixin flex-center($direction: row, $gap: 0) {
   display: flex;
@@ -25,29 +25,27 @@
 
 // Home page styles
 .home {
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
-  background-color: #ffffff;
+  background-color: #f5f5f5;
+  padding-bottom: 2rem;
 
   &__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: #ffffff;
+    background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 
     &__logo {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #6c2be7;
 
       &__text {
-        margin-left: 0.5rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #6c2be7;
       }
     }
 
@@ -61,79 +59,146 @@
       }
 
       &__settings,
-      &__notifications {
-        font-size: 1.25rem;
+      &__notifications,
+      &__logout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #555;
         cursor: pointer;
+
+        button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          color: #555;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover {
+            color: #6c2be7;
+          }
+        }
       }
     }
   }
 
   &__content {
-    @include flex-center(column, 2rem);
-    flex: 1;
-    padding: 3rem;
-    max-width: 960px;
+    max-width: 900px;
     margin: 0 auto;
+    padding: 2rem 1rem;
     text-align: center;
 
     &__title {
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
 
       h1 {
         font-size: 2.5rem;
-        color: #333;
-        font-weight: 600;
+        font-weight: bold;
+        color: #6c2be7;
       }
     }
 
     &__image {
-      width: 100%;
-      max-width: 600px;
-      margin: 2rem 0;
+      margin-bottom: 2rem;
 
       &__placeholder {
         width: 100%;
         height: 300px;
-        background-color: #f5f6fa;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
-
-        &::after {
-          content: "Image Placeholder";
-          color: #999;
-          font-size: 1.25rem;
-        }
+        background: linear-gradient(135deg, #6c2be7, #a17fff);
+        border-radius: 12px;
+        margin: 0 auto;
       }
     }
 
     &__description {
-      max-width: 700px;
-      color: #555;
-      font-size: 1.1rem;
-      line-height: 1.6;
       margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+
+      p {
+        color: #555;
+        font-size: 1.1rem;
+        line-height: 1.5;
+      }
     }
 
     &__actions {
-      margin-top: 1rem;
-
       &__button {
-        @include button-styles(#6c2be7, #5a23c4);
-        display: flex;
+        background-color: #211935;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        font-size: 1rem;
+        font-weight: 600;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #5a23c2;
+        }
 
         span {
-          font-size: 1.5rem;
-          font-weight: 400;
+          font-size: 1.2rem;
         }
       }
     }
+  }
+}
+
+// Projects list styles
+.projects {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    text-align: left;
+
+    h1 {
+      font-size: 2rem;
+      color: #6c2be7;
+      font-weight: bold;
+    }
+  }
+
+  &__create-btn {
+    background-color: #211935;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #2e2e4a;
+    }
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    text-align: left;
+  }
+
+  &__loading {
+    text-align: center;
+    color: #555;
+    grid-column: 1 / -1;
+    padding: 2rem;
   }
 }
 
@@ -152,6 +217,15 @@
         }
       }
     }
+  }
+
+  .projects__header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .projects__list {
+    grid-template-columns: 1fr;
   }
 }
 

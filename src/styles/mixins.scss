@@ -30,7 +30,7 @@
 @mixin skeleton-loading(
   $bg-color: #e9ecef,
   $highlight-color: #f8f9fa,
-  $animation-duration: 1.5s,
+  $animation-duration: 3s,
   $border-radius: 4px
 ) {
   background-color: $bg-color;
@@ -44,14 +44,13 @@
   background-position: 0 0;
   border-radius: $border-radius;
   animation: skeleton-wave $animation-duration infinite linear;
-
+  
   @keyframes skeleton-wave {
     0% {
       background-position: -100px;
     }
-    40%,
-    100% {
-      background-position: 140px;
+    40%, 100% {
+      background-position: 300px;
     }
   }
 }

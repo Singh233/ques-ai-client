@@ -4,7 +4,6 @@ import "moment/locale/en-gb";
 import styles from "./ProjectCard.module.scss";
 
 const ProjectCard = ({ project }) => {
-  console.log(project);
   const lastEditedDate = React.useMemo(() => {
     return project.metaData?.lastEdited
       ? new Date(project.metaData.lastEdited)

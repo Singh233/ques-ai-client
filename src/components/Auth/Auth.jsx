@@ -46,7 +46,6 @@ const Auth = () => {
     },
     onSuccess: (data) => {
       toast.success("Login successful");
-      console.log("Login successful:", data);
       if (data.tokens?.access?.token) {
         setCookie("accessToken", data.tokens.access.token);
       }

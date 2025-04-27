@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
-import { fetchCurrentUser, logoutUser } from "~/lib/redux/features/authSlice";
+import { logoutUser } from "~/lib/redux/features/authSlice";
 import { fetchProjects } from "~/lib/redux/features/projectsSlice";
 import styles from "./page.module.scss";
 import {

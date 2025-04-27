@@ -1,0 +1,101 @@
+@use "~/styles/mixins.scss" as *;
+
+.card {
+  display: flex;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  margin-bottom: 16px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background-color: #f9a826;
+    color: white;
+    font-weight: bold;
+    margin-right: 16px;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h3 {
+      margin: 0 0 4px 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #211935;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    color: #666;
+    font-size: 14px;
+
+    span {
+      margin-left: 16px;
+      position: relative;
+
+      &:before {
+        content: "•";
+        position: absolute;
+        left: -10px;
+      }
+    }
+  }
+}
+
+.skeleton {
+  display: flex;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 16px;
+
+  &__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    margin-right: 16px;
+    @include skeleton-loading(
+      $bg-color: #e0e0e0,
+      $highlight-color: #f0f0f0,
+      $border-radius: 8px
+    );
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+  }
+
+  &__title {
+    height: 24px;
+    width: 60%;
+    margin-bottom: 8px;
+    @include skeleton-loading();
+  }
+
+  &__meta {
+    height: 16px;
+    width: 80%;
+    @include skeleton-loading($bg-color: #e8e8e8, $highlight-color: #f5f5f5);
+  }
+}

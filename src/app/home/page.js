@@ -11,10 +11,12 @@ import {
   CirclePlus,
   CirclePlusIcon,
   LogOut,
-  Plus,
   Settings,
 } from "lucide-react";
 import CreateProjectModal from "~/components/Projects/CreateProjectModal";
+import ProjectCard, {
+  ProjectCardSkeleton,
+} from "~/components/Projects/ProjectCard";
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -164,30 +166,14 @@ export default function HomePage() {
 
             <div className={styles["projects__list"]}>
               {projectsLoading ? (
-                <div className={styles["projects__loading"]}>
-                  Loading projects...
-                </div>
+                <>
+                  {[...Array(3)].map((_, index) => (
+                    <ProjectCardSkeleton key={`skeleton-${index}`} />
+                  ))}
+                </>
               ) : (
                 projects.map((project) => (
-                  <div key={project._id} className={styles["project-card"]}>
-                    <div className={styles["project-card__icon"]}>
-                      {project.name.substring(0, 2).toUpperCase()}
-                    </div>
-                    <div className={styles["project-card__details"]}>
-                      <h3>{project.name}</h3>
-                      <div className={styles["project-card__meta"]}>
-                        {project.metaData?.fileCount || 0} Files
-                        {project.metaData?.lastEdited && (
-                          <span>
-                            Last edited{" "}
-                            {new Date(
-                              project.metaData.lastEdited
-                            ).toLocaleDateString()}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <ProjectCard key={project._id} project={project} />
                 ))
               )}
             </div>

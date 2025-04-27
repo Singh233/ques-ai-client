@@ -57,7 +57,6 @@ const Auth = () => {
       dispatch(loginSuccess(data.user));
     },
     onError: (error) => {
-      toast.error("Something went wrong! Please try again.");
       setErrorMessage(error.message);
       dispatch(loginFailure(error.message));
     },
@@ -113,7 +112,7 @@ const Auth = () => {
     }
 
     const userData = {
-      email,
+      email: email.trim(),
       password,
     };
 

@@ -1,27 +1,51 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { fetchCurrentUser, logoutUser } from "~/lib/redux/features/authSlice";
+import { fetchProjects } from "~/lib/redux/features/projectsSlice";
 import styles from "./page.module.scss";
-import { LogOut } from "lucide-react";
+import {
+  Bell,
+  CirclePlus,
+  CirclePlusIcon,
+  LogOut,
+  Plus,
+  Settings,
+} from "lucide-react";
+import CreateProjectModal from "~/components/Projects/CreateProjectModal";
 
 export default function HomePage() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { isAuthenticated, user, loading } = useSelector((state) => state.auth);
+  const {
+    isAuthenticated,
+    user,
+    loading: authLoading,
+  } = useSelector((state) => state.auth);
+  const { projects, loading: projectsLoading } = useSelector(
+    (state) => state.projects
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchCurrentUser());
   }, [dispatch]);
 
   useEffect(() => {
+    if (isAuthenticated) {
+      console.log("Authenticated");
+      dispatch(fetchProjects());
+    }
+  }, [dispatch, isAuthenticated]);
+
+  useEffect(() => {
     // If not authenticated and not loading, redirect to login page
-    if (!loading && !isAuthenticated) {
+    if (!authLoading && !isAuthenticated) {
       router.push("/");
     }
-  }, [isAuthenticated, loading, router]);
+  }, [isAuthenticated, authLoading, router]);
 
   const handleLogout = () => {
     dispatch(logoutUser()).then(() => {
@@ -29,7 +53,15 @@ export default function HomePage() {
     });
   };
 
-  if (loading) {
+  const openCreateProjectModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeCreateProjectModal = () => {
+    setIsModalOpen(false);
+  };
+
+  if (authLoading) {
     return (
       <div className={styles["loading-container"]}>
         <div className={styles["loading-container__spinner"]}></div>
@@ -68,9 +100,11 @@ export default function HomePage() {
           <div className={styles["home__header__actions__user"]}>
             {user?.name || "User"}
           </div>
-          <div className={styles["home__header__actions__settings"]}>⚙️</div>
+          <div className={styles["home__header__actions__settings"]}>
+            <Settings size={20} />
+          </div>
           <div className={styles["home__header__actions__notifications"]}>
-            🔔
+            <Bell size={20} />
           </div>
           <div className={styles["home__header__actions__logout"]}>
             <button onClick={handleLogout}>
@@ -81,31 +115,90 @@ export default function HomePage() {
       </div>
 
       <div className={styles["home__content"]}>
-        <div className={styles["home__content__title"]}>
-          <h1>Create a New Project</h1>
-        </div>
+        {projects.length === 0 ? (
+          // No projects view
+          <>
+            <div className={styles["home__content__title"]}>
+              <h1>Create a New Project</h1>
+            </div>
 
-        <div className={styles["home__content__image"]}>
-          {/* Placeholder for the image from the provided mockup */}
-          <div className={styles["home__content__image__placeholder"]}></div>
-        </div>
+            <div className={styles["home__content__image"]}>
+              <div
+                className={styles["home__content__image__placeholder"]}
+              ></div>
+            </div>
 
-        <div className={styles["home__content__description"]}>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in
-          </p>
-        </div>
+            <div className={styles["home__content__description"]}>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in
+              </p>
+            </div>
 
-        <div className={styles["home__content__actions"]}>
-          <button className={styles["home__content__actions__button"]}>
-            <span>+</span> Create New Project
-          </button>
-        </div>
+            <div className={styles["home__content__actions"]}>
+              <button
+                className={styles["home__content__actions__button"]}
+                onClick={openCreateProjectModal}
+              >
+                <CirclePlus size={24} fill="white" color="#211935" /> Create New
+                Project
+              </button>
+            </div>
+          </>
+        ) : (
+          // Projects list view
+          <>
+            <div className={styles["projects__header"]}>
+              <h1>Projects</h1>
+              <button
+                className={styles["projects__create-btn"]}
+                onClick={openCreateProjectModal}
+              >
+                <CirclePlusIcon size={24} fill="white" color="#211935" />
+                Create New Project
+              </button>
+            </div>
+
+            <div className={styles["projects__list"]}>
+              {projectsLoading ? (
+                <div className={styles["projects__loading"]}>
+                  Loading projects...
+                </div>
+              ) : (
+                projects.map((project) => (
+                  <div key={project._id} className={styles["project-card"]}>
+                    <div className={styles["project-card__icon"]}>
+                      {project.name.substring(0, 2).toUpperCase()}
+                    </div>
+                    <div className={styles["project-card__details"]}>
+                      <h3>{project.name}</h3>
+                      <div className={styles["project-card__meta"]}>
+                        {project.metaData?.fileCount || 0} Files
+                        {project.metaData?.lastEdited && (
+                          <span>
+                            Last edited{" "}
+                            {new Date(
+                              project.metaData.lastEdited
+                            ).toLocaleDateString()}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </>
+        )}
       </div>
+
+      <CreateProjectModal
+        isOpen={isModalOpen}
+        onClose={closeCreateProjectModal}
+      />
     </div>
   );
 }

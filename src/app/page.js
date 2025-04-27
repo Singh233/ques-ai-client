@@ -1,41 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
-import { fetchCurrentUser } from "~/lib/redux/features/authSlice";
-
 import styles from "./page.module.scss";
 import Auth from "~/components/Auth/Auth";
 
 export default function Home() {
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const { isAuthenticated, loading } = useSelector((state) => state.auth);
-
-  // Fetch current user on component mount
-  useEffect(() => {
-    dispatch(fetchCurrentUser());
-  }, [dispatch]);
-
-  // Redirect to home page if already authenticated
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push("/home");
-    } else {
-      router.push("/");
-    }
-  }, [isAuthenticated, router]);
-
-  // Show loading state while authentication check is in progress
-  if (loading) {
-    return (
-      <div className={styles["loading-container"]}>
-        <div className={styles["loading-container__spinner"]}></div>
-      </div>
-    );
-  }
-
   return (
     <div className={styles["page"]}>
       <div className={styles["page__left"]}>

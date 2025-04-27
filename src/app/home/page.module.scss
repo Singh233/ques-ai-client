@@ -228,7 +228,3 @@
     grid-template-columns: 1fr;
   }
 }
-
-.loading-container {
-  @include loading-spinner(50px, 5px, #6c2be7, rgba(108, 43, 231, 0.2));
-}

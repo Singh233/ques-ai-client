@@ -20,43 +20,20 @@ import ProjectCard, {
 
 export default function HomePage() {
   const dispatch = useDispatch();
-  const router = useRouter();
-  const {
-    isAuthenticated,
-    user,
-    loading: authLoading,
-  } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
   const { projects, loading: projectsLoading } = useSelector(
     (state) => state.projects
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchCurrentUser());
-  }, [dispatch]);
-
-  useEffect(() => {
     if (isAuthenticated) {
-      console.log("Authenticated");
       dispatch(fetchProjects());
     }
   }, [dispatch, isAuthenticated]);
 
-  useEffect(() => {
-    // If not authenticated and not loading, redirect to login page
-    if (!authLoading && !isAuthenticated) {
-      router.push("/");
-    }
-  }, [isAuthenticated, authLoading, router]);
-
   const handleLogout = () => {
-    dispatch(logoutUser())
-      .then(() => {
-        router.push("/");
-      })
-      .catch(() => {
-        router.push("/");
-      });
+    dispatch(logoutUser());
   };
 
   const openCreateProjectModal = () => {
@@ -66,14 +43,6 @@ export default function HomePage() {
   const closeCreateProjectModal = () => {
     setIsModalOpen(false);
   };
-
-  if (authLoading) {
-    return (
-      <div className={styles["loading-container"]}>
-        <div className={styles["loading-container__spinner"]}></div>
-      </div>
-    );
-  }
 
   return (
     <div className={styles["home"]}>
@@ -121,7 +90,7 @@ export default function HomePage() {
       </div>
 
       <div className={styles["home__content"]}>
-        {projects.length === 0 ? (
+        {projects.length === 0 && !projectsLoading ? (
           // No projects view
           <>
             <div className={styles["home__content__title"]}>

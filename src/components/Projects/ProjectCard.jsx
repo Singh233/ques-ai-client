@@ -1,7 +1,16 @@
 import React from "react";
+import moment from "moment";
+import "moment/locale/en-gb";
 import styles from "./ProjectCard.module.scss";
 
 const ProjectCard = ({ project }) => {
+  console.log(project);
+  const lastEditedDate = React.useMemo(() => {
+    return project.metaData?.lastEdited
+      ? new Date(project.metaData.lastEdited)
+      : new Date(project.createdAt);
+  }, [project.metaData?.lastEdited, project.createdAt]);
+
   return (
     <div className={styles["card"]}>
       <div className={styles["card__icon"]}>
@@ -10,13 +19,12 @@ const ProjectCard = ({ project }) => {
       <div className={styles["card__details"]}>
         <h3>{project.name}</h3>
         <div className={styles["card__meta"]}>
-          {project.metaData?.fileCount || 0} Files
-          {project.metaData?.lastEdited && (
-            <span>
-              Last edited{" "}
-              {new Date(project.metaData.lastEdited).toLocaleDateString()}
-            </span>
-          )}
+          <p>{project.metaData?.fileCount || 0} Files</p>
+          <p>
+            {lastEditedDate && (
+              <span>Last edited {moment(lastEditedDate).calendar()}</span>
+            )}
+          </p>
         </div>
       </div>
     </div>

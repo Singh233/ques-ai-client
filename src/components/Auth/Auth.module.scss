@@ -1,0 +1,185 @@
+@mixin flex-center($direction: row, $gap: 0) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: center;
+  justify-content: center;
+  gap: $gap;
+}
+
+@mixin button-styles($bg-color, $hover-color, $text-color: white) {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: $bg-color;
+  color: $text-color;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: $hover-color;
+  }
+
+  &:disabled {
+    background-color: lighten($bg-color, 20%);
+    cursor: not-allowed;
+  }
+}
+
+@mixin input-styles($padding-left: 2.5rem) {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem $padding-left;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+
+  &:focus {
+    outline: none;
+    border-color: #6c2be7;
+    box-shadow: 0 0 0 1px rgba(108, 43, 231, 0.2);
+  }
+
+  &::placeholder {
+    color: #a0aec0;
+  }
+}
+
+.auth {
+  @include flex-center(column);
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+
+  &__welcome-heading {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    color: #6c2be7;
+
+    &__subheading {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: #6c2be7;
+    }
+  }
+
+  &__form {
+    width: 100%;
+
+    &__group {
+      margin-bottom: 1rem;
+
+      &__input-container {
+        @include flex-center(row);
+        position: relative;
+        width: 100%;
+
+        &__icon {
+          position: absolute;
+          left: 12px;
+          color: #6c2be7;
+          opacity: 0.8;
+        }
+
+        &__input {
+          @include input-styles();
+        }
+      }
+    }
+
+    &__checkbox-container {
+      @include flex-center(row, 0.5rem);
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+
+      &__remember-me {
+        @include flex-center(row, 0.5rem);
+        color: #3c3c3c;
+      }
+
+      &__forgot-password {
+        color: #2563eb;
+        font-size: 0.875rem;
+        cursor: pointer;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    &__submit-button {
+      @include button-styles(#6c2be7, #5a23c4);
+    }
+  }
+
+  &__divider {
+    @include flex-center(row);
+    text-align: center;
+    margin: 1.5rem 0;
+
+    &::before,
+    &::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    &::before {
+      margin-right: 1rem;
+    }
+
+    &::after {
+      margin-left: 1rem;
+    }
+  }
+
+  &__google-button {
+    @include button-styles(white, #f8f9fa, #333);
+    border: 1px solid #e2e8f0;
+    @include flex-center(row, 0.5rem);
+    font-size: 0.9rem;
+
+    &__icon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  &__account-prompt {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+
+    &__action-link {
+      color: #6c2be7;
+      font-weight: 600;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__error-message {
+    color: #e53e3e;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    min-height: 1rem;
+
+    @include flex-center(row, 0.5rem);
+  }
+
+  &__success-message {
+    color: #38a169;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+}

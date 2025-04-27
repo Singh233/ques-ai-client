@@ -3,8 +3,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import { fetchCurrentUser } from "~/lib/redux/features/authSlice";
+import { fetchCurrentUser, logoutUser } from "~/lib/redux/features/authSlice";
 import styles from "./page.module.scss";
+import { LogOut } from "lucide-react";
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -21,6 +22,12 @@ export default function HomePage() {
       router.push("/");
     }
   }, [isAuthenticated, loading, router]);
+
+  const handleLogout = () => {
+    dispatch(logoutUser()).then(() => {
+      router.push("/");
+    });
+  };
 
   if (loading) {
     return (
@@ -64,6 +71,11 @@ export default function HomePage() {
           <div className={styles["home__header__actions__settings"]}>⚙️</div>
           <div className={styles["home__header__actions__notifications"]}>
             🔔
+          </div>
+          <div className={styles["home__header__actions__logout"]}>
+            <button onClick={handleLogout}>
+              <LogOut size={20} />
+            </button>
           </div>
         </div>
       </div>

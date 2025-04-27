@@ -53,6 +53,34 @@ export const fetchCurrentUser = createAsyncThunk(
   }
 );
 
+// Create async thunk for logging out
+export const logoutUser = createAsyncThunk(
+  "auth/logoutUser",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/logout`, {
+        method: "POST",
+        credentials: "include", // Include cookies in the request
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Logout failed");
+      }
+
+      // Dispatch the local logout action to clean up the state
+      dispatch(logout());
+      return await response.json();
+    } catch (error) {
+      // Even if the API call fails, we still want to log out locally
+      dispatch(logout());
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,

@@ -15,13 +15,9 @@ const initialState = {
 // Create async thunk for fetching user profile on app mount
 export const fetchCurrentUser = createAsyncThunk(
   "auth/fetchCurrentUser",
-  async (_, { rejectWithValue }) => {
+  async (_, { dispatch, rejectWithValue }) => {
     try {
-      // Get the cookie on the client side
-      let token = "";
-      if (typeof window !== "undefined") {
-        token = getCookie("accessToken");
-      }
+      let token = getCookie("accessToken");
 
       const response = await fetch(`${API_URL}/user/me`, {
         method: "GET",
@@ -33,6 +29,7 @@ export const fetchCurrentUser = createAsyncThunk(
       });
 
       if (!response.ok) {
+        dispatch(logout());
         throw new Error("Failed to fetch user profile");
       }
 
@@ -46,7 +43,7 @@ export const fetchCurrentUser = createAsyncThunk(
       }
 
       const data = await response.json();
-      return data;
+      return data.user;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -76,6 +73,7 @@ export const logoutUser = createAsyncThunk(
     } catch (error) {
       // Even if the API call fails, we still want to log out locally
       dispatch(logout());
+
       return rejectWithValue(error.message);
     }
   }
@@ -102,10 +100,8 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.error = null;
       // Clear tokens from cookies
-      if (typeof window !== "undefined") {
-        removeCookie("accessToken");
-        removeCookie("refreshToken");
-      }
+      removeCookie("accessToken");
+      removeCookie("refreshToken");
     },
     clearError: (state) => {
       state.error = null;
@@ -131,6 +127,9 @@ const authSlice = createSlice({
       });
   },
 });
+
+export const selectUser = (state) => state.auth.user;
+export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
 
 export const { loginSuccess, loginFailure, logout, clearError } =
   authSlice.actions;

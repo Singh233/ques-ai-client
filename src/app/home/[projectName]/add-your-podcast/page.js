@@ -84,9 +84,46 @@ export default function AddYourPodcastPage() {
     console.log("View file:", fileId);
   };
 
-  const handleDeleteFile = (fileId) => {
-    // Implement delete file functionality
-    console.log("Delete file:", fileId);
+  // Delete file mutation
+  const deleteFileMutation = useMutation({
+    mutationFn: async (fileId) => {
+      const API_URL = env.NEXT_PUBLIC_API_URL;
+      const token = getCookie("accessToken");
+
+      const response = await axios.delete(`${API_URL}/file/${fileId}`, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      // toast.success("File deleted successfully");
+      refetchFiles(); // Refresh the files list after successful deletion
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Failed to delete file");
+    },
+  });
+
+  const handleDeleteFile = (fileId, fileName) => {
+    const truncatedFileName =
+      fileName.length > 20 ? `${fileName.slice(0, 20)}...` : fileName;
+    toast.loading(`Deleting ${truncatedFileName} file...`, {
+      id: `delete-file-${fileId}`, // Unique ID for the toast
+      duration: Infinity, // Keep showing until we dismiss it
+    });
+
+    deleteFileMutation.mutate(fileId, {
+      onSettled: () => {
+        // Always dismiss the loading toast when operation completes (success or error)
+        // toast.dismiss(`delete-file-${fileId}`);
+        toast.success(`Deleted ${truncatedFileName} file`, {
+          id: `delete-file-${fileId}`, // Use the same ID to show success message
+        });
+      },
+    });
   };
 
   const podcastOptions = [

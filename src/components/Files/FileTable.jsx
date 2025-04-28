@@ -54,7 +54,7 @@ export default function FileTable({ files, onView, onDelete }) {
             </button>
             <button
               className={styles["table__row__cell__action__btn__delete"]}
-              onClick={() => onDelete(file.id)}
+              onClick={() => onDelete(file.id, file.name)}
               aria-label={`Delete ${file.name}`}
             >
               Delete

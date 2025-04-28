@@ -2,9 +2,9 @@ import React from "react";
 import moment from "moment";
 import "moment/locale/en-gb";
 import styles from "./ProjectCard.module.scss";
+import Link from "next/link";
 
 const ProjectCard = ({ project }) => {
-  console.log(project);
   const lastEditedDate = React.useMemo(() => {
     return project.metaData?.lastEdited
       ? new Date(project.metaData.lastEdited)
@@ -12,7 +12,10 @@ const ProjectCard = ({ project }) => {
   }, [project.metaData?.lastEdited, project.createdAt]);
 
   return (
-    <div className={styles["card"]}>
+    <Link
+      href={`/home/${project.name.toLowerCase().split(" ").join("-")}/add-your-podcast`}
+      className={styles["card"]}
+    >
       <div className={styles["card__icon"]}>
         {project.name.substring(0, 2).toUpperCase()}
       </div>
@@ -27,7 +30,7 @@ const ProjectCard = ({ project }) => {
           </p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

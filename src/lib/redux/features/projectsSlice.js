@@ -12,7 +12,6 @@ export const fetchProjects = createAsyncThunk(
     try {
       let token = getCookie("accessToken");
 
-      console.log("Fetching projects with token:", token);
       const response = await axios.get(`${API_URL}/project`, {
         withCredentials: true,
         headers: {
@@ -34,7 +33,7 @@ export const createProject = createAsyncThunk(
   async (projectData, { rejectWithValue }) => {
     try {
       let token = getCookie("accessToken");
-      
+
       const response = await axios.post(
         `${API_URL}/project/create`,
         projectData,

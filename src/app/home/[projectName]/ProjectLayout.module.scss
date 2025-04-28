@@ -1,0 +1,85 @@
+@use "~/styles/mixins" as *;
+
+.layout {
+  display: flex;
+  width: 100%;
+  min-height: calc(100vh - 4rem);
+
+  &__sidebar {
+    width: 30%;
+    max-width: 350px;
+    border-right: 1px solid #e5e7eb;
+    height: 100%;
+  }
+
+  &__content {
+    width: 100%;
+    padding: 2rem 2rem;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      &__right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        &__button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: white;
+          color: black;
+          border-radius: 50%;
+          cursor: pointer;
+          transition: background-color 0.2s;
+          border: 1px solid rgb(198, 198, 198);
+          padding: 0.5rem;
+
+          &:hover {
+            background-color: #f3f4f6;
+          }
+
+          &--red {
+            @extend .layout__content__header__right__button;
+            color: #f87171;
+
+            &:hover {
+              background-color: #f87171;
+              color: white;
+              border: 1px solid #f87171;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .project {
+    &__layout {
+      flex-direction: column;
+
+      &__sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+        height: auto;
+      }
+
+      &__content {
+        width: 100%;
+        padding: 1.5rem;
+      }
+    }
+  }
+}

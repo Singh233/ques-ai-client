@@ -1,0 +1,222 @@
+@use "../../../styles/mixins" as *;
+
+@mixin card() {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  min-width: 240px;
+}
+
+.podcast {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  &__loading {
+    @include pulse-skeleton-loading();
+
+    height: 300px;
+    width: 100%;
+  }
+
+  &__title {
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #333;
+    }
+  }
+
+  &__files {
+    margin-bottom: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    &__empty {
+      padding: 1.5rem;
+      text-align: center;
+      color: #666;
+      border: 1px dashed #ddd;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    &__list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    &__item {
+      display: flex;
+      align-items: center;
+      background-color: #f9f9f9;
+      border-radius: 6px;
+      padding: 1rem;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+      }
+
+      &__icon {
+        margin-right: 0.75rem;
+        color: #6c2be7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      &__details {
+        overflow: hidden;
+      }
+
+      &__name {
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      &__type {
+        font-size: 0.8rem;
+        color: #777;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  &__grid {
+    display: flex;
+    gap: 1.5rem;
+
+    &__card {
+      @include card();
+      cursor: pointer;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      &__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ede9fe;
+        border-radius: 20px;
+        color: #6c2be7;
+        padding: 20px;
+      }
+
+      &__group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        &__title {
+          font-size: 1rem;
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+          color: #111827;
+        }
+
+        &__description {
+          font-size: 0.875rem;
+          color: #6b7280;
+          flex-grow: 1;
+        }
+      }
+    }
+  }
+
+  &__card {
+    @include card();
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+
+    &__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ede9fe;
+      border-radius: 20px;
+      color: #6c2be7;
+      padding: 20px;
+    }
+
+    &__group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      &__title {
+        font-size: 1.4rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #111827;
+        text-align: center;
+      }
+
+      &__description {
+        font-size: 0.875rem;
+        color: #6b7280;
+        flex-grow: 1;
+        text-align: center;
+      }
+    }
+
+    &__button {
+      margin-top: auto;
+      background-color: white;
+      color: #6c2be7;
+      padding: 1rem 2rem;
+      border-radius: 3rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+      outline: none;
+      border: 2px solid #6c2be7;
+      width: max-content;
+      font-size: 1rem;
+
+      &:hover {
+        background-color: #6c2be7;
+        color: white;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .podcast {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

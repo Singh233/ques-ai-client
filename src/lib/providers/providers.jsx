@@ -15,6 +15,7 @@ function Providers({ children }) {
             className: "rounded-lg shadow-lg",
           }}
           position="top-right"
+          closeButton
         />
         <NextTopLoader color="#7E22CE" showSpinner={false} height={4} />
 

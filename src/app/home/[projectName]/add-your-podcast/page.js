@@ -1,20 +1,48 @@
 "use client";
 
 import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
 import { useAppSelector } from "~/lib/redux/store";
+import { useQuery } from "@tanstack/react-query";
 import { Rss, File, Youtube, FileAudio2 } from "lucide-react";
+import axios from "axios";
+import { env } from "~/env.mjs";
+import { getCookie } from "~/lib/hooks/useCookies";
 import styles from "./page.module.scss";
 import UploadModal from "~/components/Modals/UploadModal";
 
 export default function AddYourPodcastPage() {
-  const router = useRouter();
-  const params = useParams();
-  const { projectName } = params;
-  const { loading, error } = useAppSelector((state) => state.currentProject);
+  const { loading, error, project } = useAppSelector(
+    (state) => state.currentProject
+  );
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [modalHeading, setModalHeading] = useState("Upload File");
   const [modalIcon, setModalIcon] = useState(<File size={20} />);
+
+  // Fetch files using React Query
+  const fetchFiles = async () => {
+    if (!project?.id) return null;
+
+    const API_URL = env.NEXT_PUBLIC_API_URL;
+    const token = getCookie("accessToken");
+
+    const response = await axios.get(`${API_URL}/file/project/${project.id}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  };
+
+  const {
+    data: filesData,
+    isLoading: filesLoading,
+    error: filesError,
+  } = useQuery({
+    queryKey: ["files", project?.id],
+    queryFn: fetchFiles,
+    enabled: !!project?.id, // Only run the query when project ID is available
+  });
 
   const podcastOptions = [
     {
@@ -55,9 +83,6 @@ export default function AddYourPodcastPage() {
     // Handle the upload logic
   };
 
-  if (loading) return <div>Loading project data...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-
   return (
     <div className={styles["podcast"]}>
       <div className={styles["podcast__title"]}>
@@ -88,29 +113,60 @@ export default function AddYourPodcastPage() {
           </div>
         ))}
       </div>
-      <div className={styles["podcast__card"]} role="button" tabIndex={0}>
-        <div className={styles["podcast__card__group__icon"]}>
-          <File size={24} />
-        </div>
-        <div className={styles["podcast__card__group"]}>
-          <h3 className={styles["podcast__card__group__title"]}>
-            Select a file or drag and drop here (Podcast Media or Transcription
-            Text)
-          </h3>
-          <p className={styles["podcast__card__group__description"]}>
-            MP4, MOV, MP3, WAV, PDF, DOCX or TXT file
-          </p>
-        </div>
 
-        <button
-          className={styles["podcast__card__button"]}
-          onClick={() =>
-            handleOpenUploadModal("Upload from File", <File size={20} />)
-          }
-        >
-          Select File
-        </button>
-      </div>
+      {loading || filesLoading ? (
+        <div className={styles["podcast__loading"]}></div>
+      ) : (
+        <div className={styles["podcast__card"]} role="button" tabIndex={0}>
+          <div className={styles["podcast__card__group__icon"]}>
+            <File size={24} />
+          </div>
+          <div className={styles["podcast__card__group"]}>
+            <h3 className={styles["podcast__card__group__title"]}>
+              Select a file or drag and drop here (Podcast Media or
+              Transcription Text)
+            </h3>
+            <p className={styles["podcast__card__group__description"]}>
+              MP4, MOV, MP3, WAV, PDF, DOCX or TXT file
+            </p>
+          </div>
+
+          <button
+            className={styles["podcast__card__button"]}
+            onClick={() =>
+              handleOpenUploadModal("Upload from File", <File size={20} />)
+            }
+          >
+            Select File
+          </button>
+        </div>
+      )}
+
+      {/* Files Section - Display files associated with this project */}
+      {filesData?.results?.length > 0 ? (
+        <div className={styles["podcast__files"]}>
+          <h2>Your Files</h2>
+          <div className={styles["podcast__files__list"]}>
+            {filesData.results.map((file) => (
+              <div key={file._id} className={styles["podcast__files__item"]}>
+                <div className={styles["podcast__files__item__icon"]}>
+                  <FileAudio2 size={20} />
+                </div>
+                <div className={styles["podcast__files__item__details"]}>
+                  <div className={styles["podcast__files__item__name"]}>
+                    {file.name}
+                  </div>
+                  <div className={styles["podcast__files__item__type"]}>
+                    {file.fileType}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
 
       <UploadModal
         isOpen={isUploadModalOpen}

@@ -8,6 +8,7 @@
   color: #4b5563;
   text-decoration: none;
   transition: all 0.2s ease;
+  font-weight: 600;
 
   &:hover {
     background-color: #f3f4f6;
@@ -15,13 +16,24 @@
   }
 
   &--active {
+    @extend .sidebar__nav__list__link;
     background-color: #ede9fe;
     color: #6c2be7;
-    font-weight: 600;
 
     &:hover {
       background-color: #ede9fe;
       color: #6c2be7;
+    }
+  }
+
+  &--disabled {
+    @extend .sidebar__nav__list__link;
+    color: #9ca3af;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: transparent;
+      color: #9ca3af;
     }
   }
 }

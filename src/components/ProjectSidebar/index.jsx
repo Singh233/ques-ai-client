@@ -1,8 +1,8 @@
 "use client";
 
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Plus, Pen, Copy, Diamond, Settings } from "lucide-react";
+import { Plus, Pen, Copy, Diamond, Settings, Puzzle } from "lucide-react";
 import styles from "./ProjectSidebar.module.scss";
 import { useAppSelector } from "~/lib/redux/store";
 import { selectUser } from "~/lib/redux/features/authSlice";
@@ -10,32 +10,39 @@ import { selectUser } from "~/lib/redux/features/authSlice";
 const ProjectSidebar = ({ projectName }) => {
   const pathname = usePathname();
   const user = useAppSelector(selectUser);
-  console.log(user);
 
   const sidebarLinks = [
+    {
+      name: "Dashboard",
+      icon: <Puzzle size={16} />,
+      path: `/home/${projectName}`,
+      active: pathname === `/home/${projectName}`,
+      disabled: false,
+    },
     {
       name: "Add Your Podcast",
       icon: <Plus size={16} />,
       path: `/home/${projectName}/add-your-podcast`,
       active: pathname.includes("add-your-podcast"),
+      disabled: false,
     },
     {
       name: "Create & Repurpose",
       icon: <Pen size={16} />,
       path: `/home/${projectName}/rss-feed`,
-      active: pathname.includes("rss-feed"),
+      disabled: true,
     },
     {
       name: "Podcast Widget",
       icon: <Copy size={16} />,
       path: `/home/${projectName}/youtube-video`,
-      active: pathname.includes("youtube-video"),
+      disabled: true,
     },
     {
       name: "Upgrade",
       icon: <Diamond size={16} />,
       path: `/home/${projectName}/upload-files`,
-      active: pathname.includes("upload-files"),
+      disabled: true,
     },
   ];
 
@@ -49,9 +56,17 @@ const ProjectSidebar = ({ projectName }) => {
           {sidebarLinks.map((link, index) => (
             <li key={index} className={styles["sidebar__nav__list__item"]}>
               <Link
-                href={link.path}
-                className={`${styles["sidebar__nav__list__link"]} ${
-                  link.active ? styles["sidebar__nav__list__link--active"] : ""
+                href={link.disabled ? "#" : link.path}
+                className={`${
+                  styles[
+                    `sidebar__nav__list__link${
+                      link.disabled
+                        ? "--disabled"
+                        : link.active
+                        ? "--active"
+                        : ""
+                    }`
+                  ]
                 }`}
               >
                 <span className={styles["sidebar__nav__list__link__icon"]}>

@@ -3,6 +3,7 @@ import moment from "moment";
 import "moment/locale/en-gb";
 import styles from "./ProjectCard.module.scss";
 import Link from "next/link";
+import { generatePath } from "~/lib/utils";
 
 const ProjectCard = ({ project }) => {
   const lastEditedDate = React.useMemo(() => {
@@ -13,7 +14,7 @@ const ProjectCard = ({ project }) => {
 
   return (
     <Link
-      href={`/home/${project.name.toLowerCase().split(" ").join("-")}/add-your-podcast`}
+      href={`/home/${generatePath(project.name)}/add-your-podcast`}
       className={styles["card"]}
     >
       <div className={styles["card__icon"]}>

@@ -1,0 +1,187 @@
+@use "../../../styles/mixins" as *;
+
+@mixin card() {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  min-width: 240px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  &__loading {
+    @include pulse-skeleton-loading();
+
+    height: 300px;
+    width: 100%;
+  }
+
+  &__error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(236, 236, 236);
+    border-radius: 0.5rem;
+
+    height: 300px;
+    width: 100%;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #333;
+    }
+    &__left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &__back {
+        cursor: pointer;
+      }
+    }
+
+    &__right {
+      display: flex;
+      gap: 0.75rem;
+
+      &__button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background-color: #211935;
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 0.3rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 1px solid #ddd;
+
+        &:hover {
+          background-color: #342456;
+        }
+
+        &:disabled {
+          background-color: #aaa;
+          cursor: not-allowed;
+        }
+
+        &--discard {
+          @extend .container__title__right__button;
+          background-color: white;
+          color: #333;
+          border: 1px solid #ddd;
+
+          &:hover {
+            background-color: #f1f1f1;
+          }
+        }
+
+        &--save {
+          @extend .container__title__right__button;
+          background-color: #6c2be7;
+
+          &:hover {
+            background-color: #5a23c2;
+          }
+        }
+      }
+    }
+  }
+
+  &__content {
+    @include card();
+    flex-direction: column;
+    padding: 2rem 2rem;
+
+    &__title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #6c2be7;
+      line-height: 180%;
+      margin-bottom: 1rem;
+    }
+
+    &__transcript {
+      color: #5c5c5c;
+      line-height: 180%;
+      width: 100%;
+      min-height: 300px;
+      height: 100%;
+
+      border: none;
+      border-radius: 0.375rem;
+      font-size: 1rem;
+      font-family: inherit;
+      resize: vertical;
+      transition: border-color 0.2s ease;
+      resize: none;
+
+      &:focus {
+        outline: none;
+        border: none;
+      }
+
+      &:disabled {
+        background-color: white;
+        cursor: default;
+        border-color: transparent;
+        box-shadow: none;
+      }
+    }
+  }
+
+  &__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 1px dashed #ddd;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+    color: #666;
+    font-size: 1rem;
+    height: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    &__title {
+      flex-direction: column;
+      align-items: flex-start;
+
+      &__right {
+        width: 100%;
+
+        &__button {
+          flex-grow: 1;
+          justify-content: center;
+        }
+      }
+    }
+
+    &__content {
+      padding: 1.5rem 1rem;
+    }
+  }
+}

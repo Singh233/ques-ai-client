@@ -1,4 +1,6 @@
+import Link from "next/link";
 import styles from "./FileTable.module.scss";
+import { generatePath } from "~/lib/utils";
 
 /**
  * FileTable component for displaying a list of files with actions
@@ -8,8 +10,7 @@ import styles from "./FileTable.module.scss";
  * @param {Function} props.onDelete - Function to call when Delete button is clicked
  * @returns {JSX.Element}
  */
-export default function FileTable({ files, onView, onDelete }) {
-  console.log(files);
+export default function FileTable({ files, project, onView, onDelete }) {
   // Format date to display like "25 Oct 23 | 09:04"
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -45,13 +46,14 @@ export default function FileTable({ files, onView, onDelete }) {
             {formatDate(file.createdAt)}
           </div>
           <div className={styles["table__row__cell__action"]}>
-            <button
+            <Link
+              href={`/home/${generatePath(project.name)}/edit-transcript?fileId=${file.id}`}
               className={styles["table__row__cell__action__btn__view"]}
               onClick={() => onView(file.id)}
               aria-label={`View ${file.name}`}
             >
               View
-            </button>
+            </Link>
             <button
               className={styles["table__row__cell__action__btn__delete"]}
               onClick={() => onDelete(file.id, file.name)}

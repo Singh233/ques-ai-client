@@ -1,0 +1,96 @@
+@use "../../../styles/mixins" as *;
+
+@mixin card() {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  min-width: 240px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  &__loading {
+    @include pulse-skeleton-loading();
+
+    height: 300px;
+    width: 100%;
+  }
+
+  &__error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(236, 236, 236);
+    border-radius: 0.5rem;
+
+    height: 300px;
+    width: 100%;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #333;
+    }
+    &__left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &__back {
+        cursor: pointer;
+      }
+    }
+
+    &__right {
+      &__button {
+        background-color: #211935;
+        color: white;
+        padding: 0.5rem 2rem;
+        border-radius: 0.3rem;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+    }
+  }
+
+  &__content {
+    @include card();
+    flex-direction: column;
+    padding: 2rem 2rem;
+
+    &__title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #6c2be7;
+      line-height: 180%;
+    }
+
+    &__transcript {
+      color: #5c5c5c;
+      line-height: 180%;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .podcast {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

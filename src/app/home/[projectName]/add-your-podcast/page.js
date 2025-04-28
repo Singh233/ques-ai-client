@@ -236,6 +236,7 @@ export default function AddYourPodcastPage() {
           <h2>Your Files</h2>
           <FileTable
             files={filesData.results}
+            project={project}
             onView={handleViewFile}
             onDelete={handleDeleteFile}
           />

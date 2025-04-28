@@ -10,26 +10,29 @@ const UploadModal = ({
   contentLabel = "Content",
   submitLabel = "Upload",
   onSubmit,
+  isSubmitting = false,
 }) => {
   const nameRef = useRef("");
   const contentRef = useRef("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onSubmit) {
-      onSubmit({ name: nameRef.current.value, content: contentRef.current.value });
+    if (onSubmit && !isSubmitting) {
+      onSubmit({
+        name: nameRef.current.value,
+        content: contentRef.current.value,
+      });
     }
-    onClose();
   };
 
   const handleOverlayClick = (e) => {
-    if (e.target === e.currentTarget) {
+    if (e.target === e.currentTarget && !isSubmitting) {
       onClose();
     }
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Escape") {
+    if (e.key === "Escape" && !isSubmitting) {
       onClose();
     }
   };
@@ -47,7 +50,11 @@ const UploadModal = ({
           <div className={styles["modal__overlay__content__header"]}>
             <h2 className={styles["modal__overlay__content__title"]}>
               {icon && (
-                <span className={styles["modal__overlay__content__title__icon"]}>{icon}</span>
+                <span
+                  className={styles["modal__overlay__content__title__icon"]}
+                >
+                  {icon}
+                </span>
               )}
               {heading}
             </h2>
@@ -55,16 +62,22 @@ const UploadModal = ({
               className={styles["modal__overlay__content__close"]}
               onClick={onClose}
               aria-label="Close"
+              disabled={isSubmitting}
             >
               ✕
             </button>
           </div>
 
-          <form className={styles["modal__overlay__content__form"]} onSubmit={handleSubmit}>
+          <form
+            className={styles["modal__overlay__content__form"]}
+            onSubmit={handleSubmit}
+          >
             <div className={styles["modal__overlay__content__form__group"]}>
               <label
                 htmlFor="name"
-                className={styles["modal__overlay__content__form__group__label"]}
+                className={
+                  styles["modal__overlay__content__form__group__label"]
+                }
               >
                 {nameLabel}
               </label>
@@ -72,29 +85,44 @@ const UploadModal = ({
                 type="text"
                 id="name"
                 ref={nameRef}
-                className={styles["modal__overlay__content__form__group__input"]}
+                className={
+                  styles["modal__overlay__content__form__group__input"]
+                }
+                disabled={isSubmitting}
               />
             </div>
 
             <div className={styles["modal__overlay__content__form__group"]}>
               <label
                 htmlFor="content"
-                className={styles["modal__overlay__content__form__group__label"]}
+                className={
+                  styles["modal__overlay__content__form__group__label"]
+                }
               >
                 {contentLabel}
               </label>
               <textarea
                 id="content"
                 ref={contentRef}
-                className={styles["modal__overlay__content__form__group__textarea"]}
+                className={
+                  styles["modal__overlay__content__form__group__textarea"]
+                }
                 rows={6}
+                disabled={isSubmitting}
               />
             </div>
 
-            <div className={styles["modal__overlay__content__form__button-group"]}>
+            <div
+              className={styles["modal__overlay__content__form__button-group"]}
+            >
               <button
                 type="submit"
-                className={styles["modal__overlay__content__form__button-group__upload-button"]}
+                className={
+                  styles[
+                    "modal__overlay__content__form__button-group__upload-button"
+                  ]
+                }
+                disabled={isSubmitting}
               >
                 {submitLabel}
               </button>

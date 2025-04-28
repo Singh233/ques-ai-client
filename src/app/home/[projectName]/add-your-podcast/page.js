@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useAppSelector } from "~/lib/redux/store";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Rss, File, Youtube, FileAudio2 } from "lucide-react";
 import axios from "axios";
 import { env } from "~/env.mjs";
 import { getCookie } from "~/lib/hooks/useCookies";
+import { toast } from "sonner";
 import styles from "./page.module.scss";
 import UploadModal from "~/components/Modals/UploadModal";
 
@@ -38,10 +39,43 @@ export default function AddYourPodcastPage() {
     data: filesData,
     isLoading: filesLoading,
     error: filesError,
+    refetch: refetchFiles,
   } = useQuery({
     queryKey: ["files", project?.id],
     queryFn: fetchFiles,
     enabled: !!project?.id, // Only run the query when project ID is available
+  });
+
+  // File upload mutation
+  const uploadFileMutation = useMutation({
+    mutationFn: async (fileData) => {
+      const API_URL = env.NEXT_PUBLIC_API_URL;
+      const token = getCookie("accessToken");
+
+      const response = await axios.post(
+        `${API_URL}/file/create`,
+        {
+          project: project.id,
+          name: fileData.name,
+          transcript: fileData.content,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("File uploaded successfully");
+      refetchFiles(); // Refresh the files list after successful upload
+      handleCloseUploadModal();
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Failed to upload file");
+    },
   });
 
   const podcastOptions = [
@@ -79,8 +113,12 @@ export default function AddYourPodcastPage() {
   };
 
   const handleUploadSubmit = (data) => {
-    console.log("File uploaded:", data);
-    // Handle the upload logic
+    if (!project?.id) {
+      toast.error("Project not found");
+      return;
+    }
+
+    uploadFileMutation.mutate(data);
   };
 
   return (
@@ -116,7 +154,7 @@ export default function AddYourPodcastPage() {
 
       {loading || filesLoading ? (
         <div className={styles["podcast__loading"]}></div>
-      ) : (
+      ) : filesData?.results?.length <= 0 ? (
         <div className={styles["podcast__card"]} role="button" tabIndex={0}>
           <div className={styles["podcast__card__group__icon"]}>
             <File size={24} />
@@ -140,10 +178,12 @@ export default function AddYourPodcastPage() {
             Select File
           </button>
         </div>
+      ) : (
+        ""
       )}
 
       {/* Files Section - Display files associated with this project */}
-      {filesData?.results?.length > 0 ? (
+      {!loading && !filesLoading && filesData?.results?.length > 0 ? (
         <div className={styles["podcast__files"]}>
           <h2>Your Files</h2>
           <div className={styles["podcast__files__list"]}>
@@ -175,6 +215,8 @@ export default function AddYourPodcastPage() {
         heading={modalHeading}
         contentLabel="Transcript"
         onSubmit={handleUploadSubmit}
+        submitLabel={uploadFileMutation.isPending ? "Uploading..." : "Upload"}
+        isSubmitting={uploadFileMutation.isPending}
       />
     </div>
   );

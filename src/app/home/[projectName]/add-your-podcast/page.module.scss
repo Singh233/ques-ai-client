@@ -1,0 +1,140 @@
+@use "~/styles/mixins" as *;
+
+@mixin card() {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  height: 100%;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  min-width: 240px;
+}
+
+.podcast {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  &__title {
+    h1 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #111827;
+    }
+  }
+
+  &__grid {
+    display: flex;
+    gap: 1.5rem;
+
+    &__card {
+      @include card();
+      cursor: pointer;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      &__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ede9fe;
+        border-radius: 20px;
+        color: #6c2be7;
+        padding: 20px;
+      }
+
+      &__group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        &__title {
+          font-size: 1rem;
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+          color: #111827;
+        }
+
+        &__description {
+          font-size: 0.875rem;
+          color: #6b7280;
+          flex-grow: 1;
+        }
+      }
+    }
+  }
+
+  &__card {
+    @include card();
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+
+    &__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ede9fe;
+      border-radius: 20px;
+      color: #6c2be7;
+      padding: 20px;
+    }
+
+    &__group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      &__title {
+        font-size: 1.4rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #111827;
+        text-align: center;
+      }
+
+      &__description {
+        font-size: 0.875rem;
+        color: #6b7280;
+        flex-grow: 1;
+        text-align: center;
+      }
+    }
+
+    &__button {
+      margin-top: auto;
+      background-color: white;
+      color: #6c2be7;
+      padding: 1rem 2rem;
+      border-radius: 3rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+      outline: none;
+      border: 2px solid #6c2be7;
+      width: max-content;
+      font-size: 1rem;
+
+      &:hover {
+        background-color: #6c2be7;
+        color: white;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .podcast {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

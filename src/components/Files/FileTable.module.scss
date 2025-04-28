@@ -1,0 +1,147 @@
+@mixin cell() {
+  &__no {
+    font-weight: 600;
+    flex: 0 0 5%;
+    min-width: 40px;
+  }
+
+  &__name {
+    flex: 1 1 30%;
+    font-weight: 600;
+    padding-right: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__date {
+    flex: 1 1 25%;
+    color: #666;
+  }
+
+  &__action {
+    flex: 0 0 30%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    &__btn {
+      padding: 0.5rem 1.2rem;
+      border-radius: 0.25rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: 1px solid #e5e7eb;
+      background: white;
+      color: #ef4444;
+      cursor: pointer;
+      transition: all 0.15s ease;
+
+      &:hover {
+        background-color: #fee2e2;
+      }
+
+      &__view {
+        @extend .table__row__cell__action__btn;
+        color: #333;
+        border-right: none;
+        border-radius: 0.25rem 0 0 0.25rem;
+
+        &:hover {
+          background-color: #f3f4f6;
+        }
+      }
+
+      &__delete {
+        @extend .table__row__cell__action__btn;
+        border-radius: 0 0.25rem 0.25rem 0;
+      }
+    }
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+
+  &__header {
+    display: flex;
+    padding: 1rem 1rem;
+    background-color: #f8f8f8;
+    font-weight: 600;
+    color: #444;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    &__cell {
+      @include cell();
+      &:first-child {
+        border-top-left-radius: 0.5rem;
+      }
+      &:last-child {
+        border-top-right-radius: 0.5rem;
+      }
+    }
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    transition: background-color 0.15s ease;
+
+    &:last-child {
+      border: none;
+    }
+
+    &__cell {
+      @include cell();
+      &:first-child {
+        border-top-left-radius: 0.5rem;
+      }
+      &:last-child {
+        border-top-right-radius: 0.5rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .fileTable {
+    &__header,
+    &__row {
+      padding: 0.75rem 0.5rem;
+    }
+
+    &__cell {
+      &_no {
+        flex: 0 0 10%;
+      }
+
+      &_name {
+        flex: 1 1 30%;
+      }
+
+      &_date {
+        flex: 0 0 30%;
+      }
+
+      &_action {
+        flex: 0 0 auto;
+        gap: 0.25rem;
+      }
+    }
+
+    &__btn {
+      &_view,
+      &_delete {
+        padding: 0.25rem 0.75rem;
+        font-size: 0.8rem;
+      }
+    }
+  }
+}

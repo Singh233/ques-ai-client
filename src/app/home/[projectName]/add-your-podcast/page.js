@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { useAppSelector } from "~/lib/redux/store";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Rss, File, Youtube, FileAudio2 } from "lucide-react";
+import { Rss, File, Youtube } from "lucide-react";
 import axios from "axios";
 import { env } from "~/env.mjs";
 import { getCookie } from "~/lib/hooks/useCookies";
 import { toast } from "sonner";
 import styles from "./page.module.scss";
 import UploadModal from "~/components/Modals/UploadModal";
+import FileTable from "~/components/Files/FileTable";
 
 export default function AddYourPodcastPage() {
   const { loading, error, project } = useAppSelector(
@@ -77,6 +78,16 @@ export default function AddYourPodcastPage() {
       toast.error(error.response?.data?.message || "Failed to upload file");
     },
   });
+
+  const handleViewFile = (fileId) => {
+    // Implement view file functionality
+    console.log("View file:", fileId);
+  };
+
+  const handleDeleteFile = (fileId) => {
+    // Implement delete file functionality
+    console.log("Delete file:", fileId);
+  };
 
   const podcastOptions = [
     {
@@ -186,23 +197,11 @@ export default function AddYourPodcastPage() {
       {!loading && !filesLoading && filesData?.results?.length > 0 ? (
         <div className={styles["podcast__files"]}>
           <h2>Your Files</h2>
-          <div className={styles["podcast__files__list"]}>
-            {filesData.results.map((file) => (
-              <div key={file._id} className={styles["podcast__files__item"]}>
-                <div className={styles["podcast__files__item__icon"]}>
-                  <FileAudio2 size={20} />
-                </div>
-                <div className={styles["podcast__files__item__details"]}>
-                  <div className={styles["podcast__files__item__name"]}>
-                    {file.name}
-                  </div>
-                  <div className={styles["podcast__files__item__type"]}>
-                    {file.fileType}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <FileTable
+            files={filesData.results}
+            onView={handleViewFile}
+            onDelete={handleDeleteFile}
+          />
         </div>
       ) : (
         ""

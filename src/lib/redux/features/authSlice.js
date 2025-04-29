@@ -44,11 +44,17 @@ export const logoutUser = createAsyncThunk(
           withCredentials: true,
         }
       );
+      // Clear tokens from cookies
+      removeCookie("accessToken");
+      removeCookie("refreshToken");
 
       // Dispatch the local logout action to clean up the state
       dispatch(logout());
       return response.data;
     } catch (error) {
+      // Clear tokens from cookies
+      removeCookie("accessToken");
+      removeCookie("refreshToken");
       // Even if the API call fails, we still want to log out locally
       dispatch(logout());
 
@@ -77,9 +83,6 @@ const authSlice = createSlice({
       state.user = null;
       state.isAuthenticated = false;
       state.error = null;
-      // Clear tokens from cookies
-      removeCookie("accessToken");
-      removeCookie("refreshToken");
     },
     clearError: (state) => {
       state.error = null;

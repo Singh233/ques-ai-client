@@ -1,0 +1,296 @@
+@use "../../../styles/mixins" as *;
+
+@mixin card() {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1rem;
+  width: 100%;
+  min-width: 240px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  &__title {
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #333;
+    }
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+
+    &__card {
+      @include card();
+
+      h2 {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #555;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
+
+      p {
+        font-size: 1rem;
+        color: #666;
+      }
+    }
+
+    &__user-card {
+      background-color: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+
+      &__avatar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &__circle {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          background-color: #4f46e5;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 1.5rem;
+          font-weight: 600;
+        }
+      }
+
+      &__details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        &__field {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+
+          label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+          }
+
+          &__display {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+
+            span {
+              font-size: 1rem;
+              color: #333;
+              border: 1px solid #e5e7eb;
+              padding: 0.5rem 1rem;
+              padding-left: 0.4rem;
+              border-radius: 0.375rem;
+              width: 100%;
+            }
+
+            &__edit {
+              background-color: transparent;
+              color: #4f46e5;
+              border: none;
+              font-size: 0.875rem;
+              font-weight: 500;
+              cursor: pointer;
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
+
+          &__edit {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+
+            input {
+              width: 100%;
+              padding: 0.5rem;
+              border: 1px solid #d1d5db;
+              border-radius: 0.375rem;
+              font-size: 1rem;
+              color: #333;
+              outline: none;
+
+              &:focus {
+                border-color: #4f46e5;
+                box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2);
+              }
+            }
+
+            &__actions {
+              display: flex;
+              gap: 0.5rem;
+
+              &__save,
+              &__cancel {
+                padding: 0.5rem 1rem;
+                border-radius: 0.375rem;
+                font-size: 0.875rem;
+                font-weight: 500;
+                cursor: pointer;
+              }
+
+              &__save {
+                background-color: #4f46e5;
+                color: white;
+                border: none;
+
+                &:hover:not(:disabled) {
+                  background-color: #4338ca;
+                }
+
+                &:disabled {
+                  background-color: #a5a5a5;
+                  cursor: not-allowed;
+                }
+              }
+
+              &__cancel {
+                background-color: white;
+                color: #6b7280;
+                border: 1px solid #d1d5db;
+
+                &:hover {
+                  background-color: #f9fafb;
+                }
+              }
+            }
+
+            &__success {
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              color: #10b981;
+              font-size: 0.875rem;
+              font-weight: 500;
+            }
+          }
+
+          &__note {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-style: italic;
+
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    &__heading {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    &__item {
+      background-color: #4f46e5;
+      color: white;
+      padding: 1rem 1rem;
+      padding-right: 3rem;
+      border-radius: 0.375rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      width: max-content;
+
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      &:hover {
+        background-color: #4338ca;
+      }
+    }
+  }
+
+  &__banner {
+    background-color: #f5edfc;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__message {
+      color: #6b21a8;
+      font-size: 1rem;
+
+      span {
+        font-weight: 600;
+      }
+    }
+
+    &__btn {
+      background-color: #7e22ce;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #6b21a8;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+
+    &__content {
+      &__user-card {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+      }
+    }
+
+    &__banner {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+  }
+}

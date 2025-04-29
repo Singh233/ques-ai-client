@@ -6,6 +6,7 @@ import { Plus, Pen, Copy, Diamond, Settings, Puzzle } from "lucide-react";
 import styles from "./ProjectSidebar.module.scss";
 import { useAppSelector } from "~/lib/redux/store";
 import { selectUser } from "~/lib/redux/features/authSlice";
+import { generatePath } from "~/lib/utils";
 
 const ProjectSidebar = ({ projectName }) => {
   const pathname = usePathname();
@@ -82,7 +83,16 @@ const ProjectSidebar = ({ projectName }) => {
 
         <div className={styles["sidebar__nav__footer"]}>
           <div className={styles["sidebar__nav__footer__links"]}></div>
-          <Link href="/help" className={styles["sidebar__nav__footer__link"]}>
+          <Link
+            href={`/home/${generatePath(projectName)}/account-settings`}
+            className={
+              styles[
+                `sidebar__nav__footer__link${
+                  pathname.includes("account-settings") ? "--active" : ""
+                }`
+              ]
+            }
+          >
             <span className={styles["sidebar__nav__list__link__icon"]}>
               <Settings size={16} />
             </span>
@@ -92,7 +102,7 @@ const ProjectSidebar = ({ projectName }) => {
           </Link>
           <div className={styles["sidebar__nav__footer__divider"]}></div>
           <Link
-            href="/profile"
+            href={`/home/${generatePath(projectName)}/account-settings`}
             className={styles["sidebar__nav__footer__link"]}
           >
             <div className={styles["sidebar__nav__footer__link__initials"]}>

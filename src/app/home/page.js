@@ -5,20 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "~/lib/redux/features/authSlice";
 import { fetchProjects } from "~/lib/redux/features/projectsSlice";
 import styles from "./page.module.scss";
-import {
-  Bell,
-  CirclePlus,
-  CirclePlusIcon,
-  LogOut,
-  Settings,
-} from "lucide-react";
+import { Bell, CirclePlus, CirclePlusIcon, LogOut } from "lucide-react";
 import CreateProjectModal from "~/components/Projects/CreateProjectModal";
 import ProjectCard, {
   ProjectCardSkeleton,
 } from "~/components/Projects/ProjectCard";
 import Logo from "~/components/Logo/Logo";
-import Link from "next/link";
 import { toast } from "sonner";
+import Image from "next/image";
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -79,9 +73,12 @@ export default function HomePage() {
             </div>
 
             <div className={styles["home__content__image"]}>
-              <div
-                className={styles["home__content__image__placeholder"]}
-              ></div>
+              <Image
+                src={`/images/create-project.png`}
+                alt="Create Project"
+                fill
+                style={{ objectFit: "contain" }}
+              />
             </div>
 
             <div className={styles["home__content__description"]}>

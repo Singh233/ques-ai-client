@@ -91,10 +91,13 @@
     max-width: 900px;
     margin: 0 auto;
     padding: 2rem 1rem;
-    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 
     &__title {
-      margin-bottom: 2rem;
+      margin: 0 auto;
 
       h1 {
         font-size: 2.5rem;
@@ -104,22 +107,16 @@
     }
 
     &__image {
-      margin-bottom: 2rem;
-
-      &__placeholder {
-        width: 100%;
-        height: 300px;
-        background: linear-gradient(135deg, #6c2be7, #a17fff);
-        border-radius: 12px;
-        margin: 0 auto;
-      }
+      width: 100%;
+      height: 300px;
+      position: relative;
     }
 
     &__description {
-      margin-bottom: 2rem;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 0 auto;
+
+      max-width: 800px;
+      text-align: center;
 
       p {
         color: #555;
@@ -129,6 +126,8 @@
     }
 
     &__actions {
+      margin: 0 auto;
+
       &__button {
         background-color: #211935;
         color: white;

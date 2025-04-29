@@ -61,7 +61,14 @@ export default function HomePage() {
     <div className={styles["home"]}>
       <div className={styles["home__header"]}>
         <div className={styles["home__header__logo"]}>
-          <Logo size="md" variant="text-purple" />
+          <Logo
+            size={
+              typeof window === "undefined" || window.innerWidth > 768
+                ? "md"
+                : "sm"
+            }
+            variant="text-purple"
+          />
         </div>
         <div className={styles["home__header__actions"]}>
           <div

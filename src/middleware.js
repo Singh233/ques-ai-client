@@ -7,11 +7,6 @@ export function middleware(request) {
 
   const token = request.cookies.get("accessToken")?.value || "";
 
-  // If user is on login page and is already authenticated, redirect to home
-  if (isPublicPath && token) {
-    return NextResponse.redirect(new URL("/home", request.url));
-  }
-
   // If user is trying to access a protected page and is not authenticated, redirect to login
   if (!isPublicPath && !token) {
     return NextResponse.redirect(new URL("/", request.url));

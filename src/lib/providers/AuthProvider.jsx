@@ -44,7 +44,7 @@ export default function AuthProvider({ children }) {
           router.push("/home");
         }, 500); // Add a 500ms delay
       }
-        } else {
+    } else {
       // If user is not authenticated and trying to access a protected route, redirect to login
       if (isProtectedRoute) {
         setTimeout(() => {

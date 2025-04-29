@@ -1,0 +1,29 @@
+@use "../../styles/mixins.scss" as *;
+
+.logo {
+  display: inline-block;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  &__image {
+    display: block;
+    object-fit: contain;
+  }
+
+  // Size variants with BEM modifiers
+  &--sm {
+    // Small size styling
+  }
+
+  &--md {
+    // Medium size styling
+  }
+
+  &--lg {
+    // Large size styling
+  }
+}

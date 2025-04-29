@@ -8,6 +8,7 @@ import styles from "./Auth.module.scss";
 import { env } from "~/env.mjs";
 import { User, Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
+import Logo from "../Logo/Logo";
 const axios = require("axios");
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
@@ -128,9 +129,11 @@ const Auth = () => {
 
   return (
     <div className={styles["auth"]}>
-      <h1 className={styles["auth__welcome-heading"]}>Welcome to</h1>
-      <h2 className={styles["auth__welcome-heading__subheading"]}>Ques.AI</h2>
-
+      <div className={styles["auth__header"]}>
+        <Logo size={"lg"} variant="stripped-purple" />
+        <h1 className={styles["auth__header__title"]}>Welcome to</h1>
+        <h2 className={styles["auth__header__title__subheading"]}>Ques.AI</h2>
+      </div>
       <form className={styles["auth__form"]} onSubmit={handleSubmit}>
         {!isLogin && (
           <div className={styles["auth__form__group"]}>

@@ -16,6 +16,9 @@ import CreateProjectModal from "~/components/Projects/CreateProjectModal";
 import ProjectCard, {
   ProjectCardSkeleton,
 } from "~/components/Projects/ProjectCard";
+import Logo from "~/components/Logo/Logo";
+import Link from "next/link";
+import { toast } from "sonner";
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -47,44 +50,23 @@ export default function HomePage() {
     <div className={styles["home"]}>
       <div className={styles["home__header"]}>
         <div className={styles["home__header__logo"]}>
-          <svg
-            width="32"
-            height="32"
-            viewBox="0 0 32 32"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="16" cy="16" r="16" fill="white" />
-            <path
-              d="M22 11L10 21"
-              stroke="#6C2BE7"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <path
-              d="M10 11L22 21"
-              stroke="#6C2BE7"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-          <span className={styles["home__header__logo__text"]}>Ques.AI</span>
+          <Logo size="md" variant="text-purple" />
         </div>
         <div className={styles["home__header__actions"]}>
-          <div className={styles["home__header__actions__user"]}>
-            {user?.name || "User"}
-          </div>
-          <div className={styles["home__header__actions__settings"]}>
-            <Settings size={20} />
-          </div>
-          <div className={styles["home__header__actions__notifications"]}>
+          <div
+            onClick={() => {
+              toast.info("Coming soon!");
+            }}
+            className={styles["home__header__actions__item"]}
+          >
             <Bell size={20} />
           </div>
-          <div className={styles["home__header__actions__logout"]}>
-            <button onClick={handleLogout}>
-              <LogOut size={20} />
-            </button>
-          </div>
+          <button
+            onClick={handleLogout}
+            className={styles["home__header__actions__item"]}
+          >
+            <LogOut size={20} />
+          </button>
         </div>
       </div>
 
@@ -145,7 +127,7 @@ export default function HomePage() {
                 </>
               ) : (
                 projects.map((project) => (
-                  <ProjectCard key={project._id} project={project} />
+                  <ProjectCard key={project.id} project={project} />
                 ))
               )}
             </div>

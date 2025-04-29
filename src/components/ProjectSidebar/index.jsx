@@ -7,6 +7,7 @@ import styles from "./ProjectSidebar.module.scss";
 import { useAppSelector } from "~/lib/redux/store";
 import { selectUser } from "~/lib/redux/features/authSlice";
 import { generatePath } from "~/lib/utils";
+import Logo from "../Logo/Logo";
 
 const ProjectSidebar = ({ projectName }) => {
   const pathname = usePathname();
@@ -50,7 +51,7 @@ const ProjectSidebar = ({ projectName }) => {
   return (
     <aside className={styles["sidebar"]}>
       <div className={styles["sidebar__header"]}>
-        <h2>Project Navigation</h2>
+        <Logo size={"md"} variant="text-purple" />
       </div>
       <nav className={styles["sidebar__nav"]}>
         <ul className={styles["sidebar__nav__list"]}>

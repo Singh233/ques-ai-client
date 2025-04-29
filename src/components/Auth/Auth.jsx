@@ -6,9 +6,9 @@ import { useDispatch } from "react-redux";
 import { loginSuccess, loginFailure } from "../../lib/redux/features/authSlice";
 import styles from "./Auth.module.scss";
 import { env } from "~/env.mjs";
-import { InfoIcon, User, Mail, Lock } from "lucide-react";
+import { User, Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
-import { setCookie } from "~/lib/hooks/useCookies";
+const axios = require("axios");
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -27,34 +27,29 @@ const Auth = () => {
   // Sign-in mutation
   const signInMutation = useMutation({
     mutationFn: async (credentials) => {
-      const response = await fetch(`${API_URL}/user/sign-in`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
+      try {
+        const response = await axios.post(
+          `${API_URL}/user/sign-in`,
+          credentials,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        );
 
-      if (!response.ok) {
-        const error = await response.json();
-        toast.error(error.message || "Login failed");
-        throw new Error(error.message || "Login failed");
+        return response.data;
+      } catch (error) {
+        throw new Error(error.response?.data?.message || error.message);
       }
-
-      return response.json();
     },
     onSuccess: (data) => {
       toast.success("Login successful");
-      if (data.tokens?.access?.token) {
-        setCookie("accessToken", data.tokens.access.token);
-      }
-      if (data.tokens?.refresh?.token) {
-        setCookie("refreshToken", data.tokens.refresh.token);
-      }
-
       dispatch(loginSuccess(data.user));
     },
     onError: (error) => {
+      toast.error(error.message);
       setErrorMessage(error.message);
       dispatch(loginFailure(error.message));
     },
@@ -63,28 +58,29 @@ const Auth = () => {
   // Sign-up mutation
   const signUpMutation = useMutation({
     mutationFn: async (userData) => {
-      const response = await fetch(`${API_URL}/user/sign-up`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
+      try {
+        const response = await axios.post(`${API_URL}/user/sign-up`, userData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        });
 
-      if (!response.ok) {
-        const error = await response.json();
-        toast.error(error.message || "Registration failed");
-        throw new Error(error.message || "Registration failed");
+        return response.data;
+      } catch (error) {
+        throw new Error(error.response?.data?.message || error.message);
       }
-
-      return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      toast.success("Account created successfully");
       setIsLogin(true);
       setErrorMessage("");
+      dispatch(loginSuccess(data.user));
     },
     onError: (error) => {
+      toast.error(error.message);
       setErrorMessage(error.message);
+      dispatch(loginFailure(error.message));
     },
   });
 
@@ -139,7 +135,10 @@ const Auth = () => {
         {!isLogin && (
           <div className={styles["auth__form__group"]}>
             <div className={styles["auth__form__group__input-container"]}>
-              <User className={styles["auth__form__group__input-container__icon"]} size={18} />
+              <User
+                className={styles["auth__form__group__input-container__icon"]}
+                size={18}
+              />
               <input
                 type="text"
                 className={styles["auth__form__group__input-container__input"]}
@@ -152,7 +151,10 @@ const Auth = () => {
         )}
         <div className={styles["auth__form__group"]}>
           <div className={styles["auth__form__group__input-container"]}>
-            <Mail className={styles["auth__form__group__input-container__icon"]} size={18} />
+            <Mail
+              className={styles["auth__form__group__input-container__icon"]}
+              size={18}
+            />
             <input
               type="email"
               className={styles["auth__form__group__input-container__input"]}
@@ -165,7 +167,10 @@ const Auth = () => {
 
         <div className={styles["auth__form__group"]}>
           <div className={styles["auth__form__group__input-container"]}>
-            <Lock className={styles["auth__form__group__input-container__icon"]} size={18} />
+            <Lock
+              className={styles["auth__form__group__input-container__icon"]}
+              size={18}
+            />
             <input
               type="password"
               className={styles["auth__form__group__input-container__input"]}
@@ -179,7 +184,10 @@ const Auth = () => {
         {!isLogin && (
           <div className={styles["auth__form__group"]}>
             <div className={styles["auth__form__group__input-container"]}>
-              <Lock className={styles["auth__form__group__input-container__icon"]} size={18} />
+              <Lock
+                className={styles["auth__form__group__input-container__icon"]}
+                size={18}
+              />
               <input
                 type="password"
                 className={styles["auth__form__group__input-container__input"]}
@@ -193,11 +201,18 @@ const Auth = () => {
 
         {isLogin && (
           <div className={styles["auth__form__checkbox-container"]}>
-            <div className={styles["auth__form__checkbox-container__remember-me"]}>
+            <div
+              className={styles["auth__form__checkbox-container__remember-me"]}
+            >
               <input type="checkbox" id="rememberMe" ref={rememberMeRef} />
               <label htmlFor="rememberMe">Remember me</label>
             </div>
-            <a href="#" className={styles["auth__form__checkbox-container__forgot-password"]}>
+            <a
+              href="#"
+              className={
+                styles["auth__form__checkbox-container__forgot-password"]
+              }
+            >
               Forgot password?
             </a>
           </div>
@@ -249,7 +264,10 @@ const Auth = () => {
 
       <div className={styles["auth__account-prompt"]}>
         {isLogin ? "Don't have an account?" : "Already have an account?"}
-        <span className={styles["auth__account-prompt__action-link"]} onClick={toggleAuthMode}>
+        <span
+          className={styles["auth__account-prompt__action-link"]}
+          onClick={toggleAuthMode}
+        >
           {isLogin ? " Create Account" : " Login"}
         </span>
       </div>

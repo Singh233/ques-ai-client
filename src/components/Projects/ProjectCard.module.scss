@@ -9,6 +9,12 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
   margin-bottom: 16px;
+  position: relative;
+
+  @media (max-width: 425px) {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 
   &:hover {
     transform: translateY(-2px);

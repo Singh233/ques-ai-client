@@ -2,6 +2,9 @@
  * Cookie management utilities
  */
 
+import { useMemo } from "react";
+import { env } from "~/env.mjs";
+
 // Helper functions for direct usage outside of components
 export const setCookie = (name, value, options = {}) => {
   if (typeof window === "undefined") return;
@@ -11,7 +14,6 @@ export const setCookie = (name, value, options = {}) => {
     expires = new Date(Date.now() + 7 * 86400000), // 7 days by default
     secure = process.env.NODE_ENV === "production",
     sameSite = "strict",
-    httpOnly = true,
   } = options;
 
   let cookieString = `${name}=${encodeURIComponent(value)}; path=${path}`;
@@ -42,10 +44,17 @@ export const getCookie = (name) => {
 
 export const removeCookie = (name, path = "/") => {
   if (typeof window === "undefined") return;
-  document.cookie = `${name}=; path=${path}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-};
 
-// React hook for use in components
+  const domain = env.NODE_ENV === "production" ? ".chillsanam.com" : undefined;
+
+  let cookieString = `${name}=; path=${path}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+
+  if (domain) {
+    cookieString += `; domain=${domain}`;
+  }
+
+  document.cookie = cookieString;
+};
 
 export const useCookies = () => {
   const cookieUtils = useMemo(

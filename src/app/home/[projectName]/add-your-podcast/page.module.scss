@@ -18,10 +18,11 @@
   gap: 2rem;
 
   &__loading {
-    @include pulse-skeleton-loading();
-
     height: 300px;
     width: 100%;
+    & {
+      @include pulse-skeleton-loading();
+    }
   }
 
   &__title {

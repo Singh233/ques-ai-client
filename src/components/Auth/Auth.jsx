@@ -33,7 +33,6 @@ const Auth = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(credentials),
-        credentials: "include", // include cookies
       });
 
       if (!response.ok) {

@@ -5,7 +5,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
 import axios from "axios";
 import { env } from "~/env.mjs";
-import { getCookie } from "~/lib/hooks/useCookies";
 import styles from "./page.module.scss";
 import Link from "next/link";
 import { generatePath } from "~/lib/utils";
@@ -33,14 +32,9 @@ export default function EditTranscriptPage() {
   const fetchFile = async () => {
     if (!fileId) return null;
 
-    const token = getCookie("accessToken");
-
     try {
       const response = await axios.get(`${API_URL}/file/${fileId}`, {
         withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
       return response.data.file;
     } catch (error) {
@@ -71,16 +65,11 @@ export default function EditTranscriptPage() {
   // Mutation for updating the transcript
   const { mutate: updateTranscript, isPending: isUpdating } = useMutation({
     mutationFn: async (newTranscript) => {
-      const token = getCookie("accessToken");
-
       const response = await axios.put(
         `${API_URL}/file/${fileId}`,
         { transcript: newTranscript },
         {
           withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
       return response.data;

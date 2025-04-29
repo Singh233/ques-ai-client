@@ -11,6 +11,7 @@ export const setCookie = (name, value, options = {}) => {
     expires = new Date(Date.now() + 7 * 86400000), // 7 days by default
     secure = process.env.NODE_ENV === "production",
     sameSite = "strict",
+    httpOnly = true,
   } = options;
 
   let cookieString = `${name}=${encodeURIComponent(value)}; path=${path}`;

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 import { env } from "~/env.mjs";
-import { setCookie, getCookie, removeCookie } from "~/lib/hooks/useCookies";
+import { removeCookie } from "~/lib/hooks/useCookies";
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -17,34 +18,15 @@ export const fetchCurrentUser = createAsyncThunk(
   "auth/fetchCurrentUser",
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      let token = getCookie("accessToken");
-
-      const response = await fetch(`${API_URL}/user/me`, {
-        method: "GET",
-        credentials: "include", // Include cookies in the request
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
-        },
+      const response = await axios.get(`${API_URL}/user/me`, {
+        withCredentials: true,
       });
 
-      if (!response.ok) {
-        dispatch(logout());
-        throw new Error("Failed to fetch user profile");
-      }
-
-      // parse the headers to get new tokens if available
-      if (response.headers.has("Access-Token")) {
-        const newAccessToken = response.headers.get("Access-Token");
-        const newRefreshToken = response.headers.get("Refresh-Token");
-
-        setCookie("accessToken", newAccessToken);
-        setCookie("refreshToken", newRefreshToken);
-      }
-
-      const data = await response.json();
-      return data.user;
+      return response.data.user;
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        dispatch(logout());
+      }
       return rejectWithValue(error.message);
     }
   }
@@ -55,24 +37,17 @@ export const logoutUser = createAsyncThunk(
   "auth/logoutUser",
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      const refreshToken = getCookie("refreshToken");
-
-      const response = await fetch(`${API_URL}/auth/logout`, {
-        method: "POST",
-        credentials: "include", // Include cookies in the request
-        headers: {
-          "Content-Type": "application/json",
-          "x-refresh-token": refreshToken,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Logout failed");
-      }
+      const response = await axios.post(
+        `${API_URL}/auth/logout`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
 
       // Dispatch the local logout action to clean up the state
       dispatch(logout());
-      return await response.json();
+      return response.data;
     } catch (error) {
       // Even if the API call fails, we still want to log out locally
       dispatch(logout());

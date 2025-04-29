@@ -6,7 +6,6 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { Rss, File, Youtube } from "lucide-react";
 import axios from "axios";
 import { env } from "~/env.mjs";
-import { getCookie } from "~/lib/hooks/useCookies";
 import { toast } from "sonner";
 import styles from "./page.module.scss";
 import UploadModal from "~/components/Modals/UploadModal";
@@ -25,13 +24,9 @@ export default function AddYourPodcastPage() {
     if (!project?.id) return null;
 
     const API_URL = env.NEXT_PUBLIC_API_URL;
-    const token = getCookie("accessToken");
 
     const response = await axios.get(`${API_URL}/file/project/${project.id}`, {
       withCredentials: true,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     });
     return response.data;
   };
@@ -51,7 +46,6 @@ export default function AddYourPodcastPage() {
   const uploadFileMutation = useMutation({
     mutationFn: async (fileData) => {
       const API_URL = env.NEXT_PUBLIC_API_URL;
-      const token = getCookie("accessToken");
 
       const response = await axios.post(
         `${API_URL}/file/create`,
@@ -62,9 +56,6 @@ export default function AddYourPodcastPage() {
         },
         {
           withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
       return response.data;
@@ -88,13 +79,9 @@ export default function AddYourPodcastPage() {
   const deleteFileMutation = useMutation({
     mutationFn: async (fileId) => {
       const API_URL = env.NEXT_PUBLIC_API_URL;
-      const token = getCookie("accessToken");
 
       const response = await axios.delete(`${API_URL}/file/${fileId}`, {
         withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
       return response.data;
     },

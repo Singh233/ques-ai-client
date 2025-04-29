@@ -10,6 +10,7 @@ const initialState = {
   user: null,
   isAuthenticated: false,
   loading: false,
+  loggingOut: false, // Added loggingOut state
   error: null,
 };
 
@@ -108,12 +109,24 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(logoutUser.pending, (state) => {
+        state.loggingOut = true; // Set loggingOut to true when logout starts
+        state.error = null;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.loggingOut = false; // Set loggingOut to false when logout succeeds
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.loggingOut = false; // Set loggingOut to false even if logout fails
+        state.error = action.payload;
       });
   },
 });
 
 export const selectUser = (state) => state.auth.user;
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
+export const selectLoggingOut = (state) => state.auth.loggingOut;
 
 export const { loginSuccess, loginFailure, logout, clearError, updateUser } =
   authSlice.actions;

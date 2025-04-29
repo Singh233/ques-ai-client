@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "~/lib/redux/features/authSlice";
+import { logoutUser, selectLoggingOut } from "~/lib/redux/features/authSlice";
 import { fetchProjects } from "~/lib/redux/features/projectsSlice";
 import styles from "./page.module.scss";
 import { Bell, CirclePlus, CirclePlusIcon, LogOut } from "lucide-react";
@@ -13,14 +13,17 @@ import ProjectCard, {
 import Logo from "~/components/Logo/Logo";
 import { toast } from "sonner";
 import Image from "next/image";
+import { useAppSelector } from "~/lib/redux/store";
 
 export default function HomePage() {
   const dispatch = useDispatch();
+  const isLoggingOut = useAppSelector(selectLoggingOut);
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const { projects, loading: projectsLoading } = useSelector(
     (state) => state.projects
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const toastId = "logout-toast";
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -28,8 +31,22 @@ export default function HomePage() {
     }
   }, [dispatch, isAuthenticated]);
 
+  useEffect(() => {
+    console.log(isLoggingOut);
+    if (isLoggingOut) {
+      toast.loading("Logging out...", {
+        id: toastId,
+      });
+    }
+  }, [isLoggingOut]);
+
   const handleLogout = () => {
-    dispatch(logoutUser());
+    dispatch(logoutUser()).then(() => {
+      toast.success("Logged out successfully", {
+        id: toastId,
+        duration: 3000,
+      });
+    });
   };
 
   const openCreateProjectModal = () => {
@@ -58,6 +75,10 @@ export default function HomePage() {
           <button
             onClick={handleLogout}
             className={styles["home__header__actions__item"]}
+            disabled={isLoggingOut}
+            style={{
+              cursor: isLoggingOut ? "not-allowed" : "pointer",
+            }}
           >
             <LogOut size={20} />
           </button>

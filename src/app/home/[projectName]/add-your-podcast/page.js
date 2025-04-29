@@ -95,16 +95,14 @@ export default function AddYourPodcastPage() {
     const truncatedFileName =
       fileName.length > 20 ? `${fileName.slice(0, 20)}...` : fileName;
     toast.loading(`Deleting ${truncatedFileName} file...`, {
-      id: `delete-file-${fileId}`, // Unique ID for the toast
-      duration: Infinity, // Keep showing until we dismiss it
+      id: `delete-file-${fileId}`,
+      duration: 5000,
     });
 
     deleteFileMutation.mutate(fileId, {
       onSettled: () => {
-        // Always dismiss the loading toast when operation completes (success or error)
-        // toast.dismiss(`delete-file-${fileId}`);
         toast.success(`Deleted ${truncatedFileName} file`, {
-          id: `delete-file-${fileId}`, // Use the same ID to show success message
+          id: `delete-file-${fileId}`,
         });
       },
     });

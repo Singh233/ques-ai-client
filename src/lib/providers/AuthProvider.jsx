@@ -40,12 +40,16 @@ export default function AuthProvider({ children }) {
     if (isAuthenticated) {
       // If user is authenticated and on a public route, redirect to home
       if (isPublicRoute) {
-        router.push("/home");
+        setTimeout(() => {
+          router.push("/home");
+        }, 500); // Add a 500ms delay
       }
-    } else {
+        } else {
       // If user is not authenticated and trying to access a protected route, redirect to login
       if (isProtectedRoute) {
-        router.push("/");
+        setTimeout(() => {
+          router.push("/");
+        }, 500); // Add a 500ms delay
       }
     }
   }, [isAuthenticated, pathname, router, loading, isAuthChecking]);

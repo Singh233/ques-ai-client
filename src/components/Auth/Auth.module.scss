@@ -113,6 +113,7 @@
       &__remember-me {
         @include flex-center(row, 0.5rem);
         color: #3c3c3c;
+        visibility: hidden;
       }
 
       &__forgot-password {
@@ -120,6 +121,7 @@
         font-size: 0.875rem;
         cursor: pointer;
         text-decoration: none;
+        justify-self: flex-end;
 
         &:hover {
           text-decoration: underline;

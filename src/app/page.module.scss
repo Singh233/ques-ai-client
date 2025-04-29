@@ -1,19 +1,27 @@
-@use "~/styles/mixins" as *;
-
 .page {
   display: flex;
   height: 100vh;
   width: 100%;
 
   &__left {
-    flex: 1;
+    flex: 0 0 65%; // Set the width to 70%
     background: linear-gradient(135deg, #7e22ce, #6c2be7);
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: flex-start;
     padding: 4rem;
     color: white;
+    position: relative;
+    z-index: 1;
+
+    &__background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+    }
 
     &__info-container {
       max-width: 600px;
@@ -28,10 +36,11 @@
       }
 
       &__podcast-heading {
-        font-size: 3.5rem;
-        font-weight: bold;
+        font-size: 4rem;
         line-height: 1.2;
         margin-bottom: 2rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
       }
 
       &__tagline {
@@ -43,7 +52,7 @@
   }
 
   &__right {
-    flex: 1;
+    flex: 0 0 35%; // Set the width to 30%
     background-color: #f5f6fa;
     display: flex;
     justify-content: center;
@@ -52,7 +61,7 @@
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1080px) {
   .page {
     flex-direction: column;
 
@@ -68,7 +77,37 @@
 
       &__info-container {
         max-width: 100%;
+        width: 100%;
+
+        &__logo {
+          font-size: 1.5rem;
+        }
+
+        &__podcast-heading {
+          font-size: 3rem;
+        }
       }
+    }
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .page {
+    display: block;
+    &__left {
+      display: none;
+    }
+
+    &__right {
+      height: 100dvh;
+    }
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .page {
+    &__right {
+      padding: 1rem;
     }
   }
 }

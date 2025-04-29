@@ -2,14 +2,14 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Plus, Pen, Copy, Diamond, Settings, Puzzle } from "lucide-react";
+import { Plus, Pen, Copy, Diamond, Settings, Puzzle, X } from "lucide-react";
 import styles from "./ProjectSidebar.module.scss";
 import { useAppSelector } from "~/lib/redux/store";
 import { selectUser } from "~/lib/redux/features/authSlice";
 import { generatePath } from "~/lib/utils";
 import Logo from "../Logo/Logo";
 
-const ProjectSidebar = ({ projectName }) => {
+const ProjectSidebar = ({ projectName, isCollapsed, onToggle }) => {
   const pathname = usePathname();
   const user = useAppSelector(selectUser);
 
@@ -49,7 +49,12 @@ const ProjectSidebar = ({ projectName }) => {
   ];
 
   return (
-    <aside className={styles["sidebar"]}>
+    <aside
+      className={styles[`sidebar${isCollapsed ? "--collapsed" : "--expanded"}`]}
+    >
+      <button className={`${styles["sidebar__toggle"]}`} onClick={onToggle}>
+        <X size={16} />
+      </button>
       <div className={styles["sidebar__header"]}>
         <Logo size={"md"} variant="text-purple" />
       </div>

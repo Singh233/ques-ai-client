@@ -10,6 +10,9 @@
   gap: 1rem;
   width: 100%;
   min-width: 240px;
+  @media screen and (max-width: 1215px) {
+    justify-content: space-between;
+  }
 }
 
 .podcast {
@@ -112,6 +115,10 @@
     display: flex;
     gap: 1.5rem;
 
+    @media screen and (max-width: 1215px) {
+      flex-direction: column;
+    }
+
     &__card {
       @include card();
       cursor: pointer;
@@ -210,14 +217,6 @@
         background-color: #6c2be7;
         color: white;
       }
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .podcast {
-    &__grid {
-      grid-template-columns: 1fr;
     }
   }
 }

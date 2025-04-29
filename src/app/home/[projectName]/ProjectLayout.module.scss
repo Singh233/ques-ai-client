@@ -10,6 +10,10 @@
     max-width: 350px;
     border-right: 1px solid #e5e7eb;
     height: 100%;
+
+    @media screen and (max-width: 950px) {
+      width: 0%;
+    }
   }
 
   &__content {
@@ -56,6 +60,15 @@
               background-color: #f87171;
               color: white;
               border: 1px solid #f87171;
+            }
+          }
+
+          &--menu {
+            @extend .layout__content__header__right__button;
+            display: none;
+
+            @media screen and (max-width: 950px) {
+              display: flex;
             }
           }
         }

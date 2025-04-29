@@ -44,36 +44,25 @@ export const getCookie = (name) => {
 
 export const removeCookie = (name, path = "/") => {
   if (typeof window === "undefined") {
-    console.log("removeCookie: window is undefined, exiting function.");
     return;
   }
-
-  console.log(`removeCookie: Removing cookie with name=${name} and path=${path}`);
 
   const domain =
     env.NEXT_PUBLIC_NODE_ENV === "production" ? ".chillsanam.com" : undefined;
 
-  console.log(`removeCookie: Determined domain=${domain}`);
-
   let cookieString = `${name}=; path=${path}; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-
-  console.log(`removeCookie: Initial cookieString=${cookieString}`);
 
   if (domain) {
     cookieString += `; domain=${domain}`;
-    console.log(`removeCookie: Added domain to cookieString=${cookieString}`);
   }
 
   // secure
   cookieString += "; secure";
-  console.log(`removeCookie: Added secure flag to cookieString=${cookieString}`);
 
   // samesite
   cookieString += "; samesite=strict";
-  console.log(`removeCookie: Added samesite flag to cookieString=${cookieString}`);
 
   document.cookie = cookieString;
-  console.log(`removeCookie: Final cookieString set in document.cookie=${cookieString}`);
 };
 
 export const useCookies = () => {

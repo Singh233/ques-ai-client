@@ -70,10 +70,7 @@ export default function AddYourPodcastPage() {
     },
   });
 
-  const handleViewFile = (fileId) => {
-    // Implement view file functionality
-    console.log("View file:", fileId);
-  };
+  const handleViewFile = (fileId) => {};
 
   // Delete file mutation
   const deleteFileMutation = useMutation({
